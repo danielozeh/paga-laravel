@@ -11,7 +11,7 @@ trait ApiResponseTrait
     /**
      * @throws RequestException
      */
-    public function checkForFailure(Response $response, $module): void
+    public static function checkForFailure(Response $response, $module): void
     {
         if ($response->serverError()) {
             throw new \Exception($response);
@@ -22,7 +22,7 @@ trait ApiResponseTrait
         }
     }
 
-    public function successResponse($message = 'Success', $data = null, $code = 200)
+    public static function successResponse($message = 'Success', $data = null, $code = 200)
     {
         $res = [
             'status' => true,
@@ -33,7 +33,7 @@ trait ApiResponseTrait
         return json_encode($res);
     }
 
-    public function failureResponse($message = 'Error occurred. Please check back later', $code = 400)
+    public static function failureResponse($message = 'Error occurred. Please check back later', $code = 400)
     {
         $res = [
             'status' => false,

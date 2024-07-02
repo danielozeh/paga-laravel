@@ -16,8 +16,8 @@ class PagaBusiness {
      * @author Daniel Ozeh <https://github.com/danielozeh>
      * @throws RequestException
      */
-    private function processResponse($response, $module) {
-        $this->checkForFailure($response, $module);
+    private static function processResponse($response, $module) {
+        self::checkForFailure($response, $module);
         $response = $response->json();
 
         // \Log::debug("Paga", ["response"=> $response]);
@@ -30,7 +30,7 @@ class PagaBusiness {
         throw new \Exception($response);
     }
 
-    private function generateReference(): string
+    private static function generateReference(): string
     {
         return 'PG-' . Str::random(26);
     }
@@ -39,19 +39,19 @@ class PagaBusiness {
      * @author Daniel Ozeh <https://github.com/danielozeh>
      * @return 
      */
-    public function getBankList() {
-        $referenceNumber = $this->generateReference();
+    public static function getBankList() {
+        $referenceNumber = self::generateReference();
         $response = GetBankList::build()
             ->PostData($referenceNumber)
             ->send();
         
-        $response = $this->processResponse($response, 'PagaBusiness::GetBankList');
+        $response = self::processResponse($response, 'PagaBusiness::GetBankList');
         $response = GetBankListResponse::from($response);
 
         if ($response && $response->responseCode != 0) {
-            return $this->failureResponse('No data found');
+            return self::failureResponse('No data found');
         }
-        return $this->successResponse('List of banks returned successfully', $response);
+        return self::successResponse('List of banks returned successfully', $response);
     }
 }
 
