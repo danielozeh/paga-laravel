@@ -37,7 +37,7 @@ trait ApiResponseTrait
     {
         $res = [
             'status' => false,
-            'msg' => $message,
+            'message' => $message,
             // 'code' => $code
         ];
         return json_encode($res);

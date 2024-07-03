@@ -2,9 +2,11 @@
 namespace DanielOzeh\Paga;
 
 use App\Exceptions\FalseStatusException;
+use DanielOzeh\Paga\Data\PagaBusiness\ValidateDepositToBankResponse;
 use DanielOzeh\Paga\Library\Traits\ApiResponseTrait;
 use DanielOzeh\Paga\Data\PagaBusiness\GetBankListResponse;
 use DanielOzeh\Paga\Transporter\PagaBusiness\GetBankList;
+use DanielOzeh\Paga\Transporter\PagaBusiness\ValidateDepositToBank;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Str;
 
@@ -26,8 +28,9 @@ class PagaBusiness {
             return $response;
             
         }
-        \Log::error("$module --- response status is false");
-        throw new \Exception($response);
+        return $response;
+        // \Log::error("$module --- response status is false");
+        // throw new \Exception($response);
     }
 
     private static function generateReference(): string
@@ -52,6 +55,21 @@ class PagaBusiness {
             return self::failureResponse('No data found');
         }
         return self::successResponse('List of banks returned successfully', $response);
+    }
+
+    public static function validateDepositToBank($amount, $bankId, $accountNumber) {
+        $referenceNumber = self::generateReference();
+        $response = ValidateDepositToBank::build()
+            ->PostData($referenceNumber, $amount, $bankId, $accountNumber)
+            ->send();
+        
+        $response = self::processResponse($response, 'PagaBusiness::ValidateDepositToBank');
+        $response = ValidateDepositToBankResponse::from($response);
+
+        if($response && $response->responseCode == 0) {
+            return self::successResponse('Deposit to bank validated successfully', $response);
+        }
+        return self::failureResponse($response->message);
     }
 }
 

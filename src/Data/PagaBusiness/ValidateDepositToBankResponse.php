@@ -11,14 +11,16 @@ use Spatie\LaravelData\DataCollection;
  * 
  * @author danielozeh <https://github.com/danielozeh>
  */
-class GetBankListResponse extends Data {
+class ValidateDepositToBankResponse extends Data {
 
     public function __construct(
         public int $responseCode,
         public string $referenceNumber,
-        #[MapInputName('banks')]
-        #[DataCollectionOf(Bank::class)]
-        public DataCollection $banks,
+        public string $message,
+        // public array $banks,
+        // #[MapInputName('banks')]
+        // #[DataCollectionOf(Bank::class)]
+        // public DataCollection $banks,
     ) {}
 }
 

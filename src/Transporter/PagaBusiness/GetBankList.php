@@ -17,6 +17,9 @@ class GetBankList extends BaseRequest {
     public function PostData(string $referenceNumber) : static {
         return $this->withData([
             'referenceNumber' => $referenceNumber
+        ])
+        ->withHeaders([
+            'hash' => hash('sha512', $referenceNumber.env('PAGA_BUSINESS_API_KEY')),
         ]);
     }
 }

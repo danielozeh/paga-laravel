@@ -44,11 +44,6 @@ class BaseRequest extends Request {
 
     public function withData(array $data): static {
         $this->data = array_merge($this->data, $data);
-
-        $this->withHeaders([
-            'hash' => hash('sha512', $this->data['referenceNumber'].env('PAGA_BUSINESS_API_KEY')),
-        ]);
-
         return $this;
     }
 

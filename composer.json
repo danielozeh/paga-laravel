@@ -1,5 +1,7 @@
 {
     "name": "danielozeh/paga",
+    "description": "Laravel Package for Paga",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "DanielOzeh\\Paga\\": "src/"
@@ -12,6 +14,7 @@
         }
     ],
     "require": {
+        "php": ">=8.2",
         "spatie/laravel-data": "^4.7",
         "juststeveking/laravel-transporter": "^3.0"
     }
