@@ -54,7 +54,12 @@ class PagaBusiness {
         if ($response && $response->responseCode != 0) {
             return self::failureResponse('No data found');
         }
-        return self::successResponse('List of banks returned successfully', $response);
+        $data = [
+            'reference_code' => $response->responseCode,
+            'reference_number' => $response->referenceNumber,
+            'banks' => $response->banks
+        ];
+        return self::successResponse('List of banks returned successfully', $data);
     }
 
     public static function validateDepositToBank($amount, $bankId, $accountNumber) {
@@ -67,7 +72,17 @@ class PagaBusiness {
         $response = ValidateDepositToBankResponse::from($response);
 
         if($response && $response->responseCode == 0) {
-            return self::successResponse('Deposit to bank validated successfully', $response);
+            $data = [
+                'reference_code' => $response->responseCode,
+                'reference_number' => $response->referenceNumber,
+                'amount' => $amount,
+                'bank_id' => $bankId,
+                'account_number' => $accountNumber,
+                'account_name' => $response->destinationAccountHolderNameAtBank,
+                'fee' => $response->fee,
+                'vat' => $response->vat
+            ];
+            return self::successResponse('Deposit to bank validated successfully', $data);
         }
         return self::failureResponse($response->message);
     }

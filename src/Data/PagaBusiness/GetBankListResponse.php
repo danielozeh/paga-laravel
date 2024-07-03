@@ -17,12 +17,12 @@ class GetBankListResponse extends Data {
         public int $responseCode,
         public string $referenceNumber,
         #[MapInputName('banks')]
-        #[DataCollectionOf(Bank::class)]
+        #[DataCollectionOf(BankData::class)]
         public DataCollection $banks,
     ) {}
 }
 
-class Bank extends Data
+class BankData extends Data
 {
     public function __construct(
         public string $name,

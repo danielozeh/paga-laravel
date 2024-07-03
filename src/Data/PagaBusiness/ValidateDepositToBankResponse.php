@@ -16,23 +16,9 @@ class ValidateDepositToBankResponse extends Data {
     public function __construct(
         public int $responseCode,
         public string $referenceNumber,
-        public string $message,
-        // public array $banks,
-        // #[MapInputName('banks')]
-        // #[DataCollectionOf(Bank::class)]
-        // public DataCollection $banks,
-    ) {}
-}
-
-class Bank extends Data
-{
-    public function __construct(
-        public string $name,
-        #[MapInputName('uuid')]
-        public string $id,
-        #[MapInputName('interInstitutionCode')]
-        public ?string $interInstitutionCode,
-        #[MapInputName('sortCode')]
-        public ?string $code
+        public ?string $message,
+        public ?string $destinationAccountHolderNameAtBank,
+        public ?string $fee,
+        public ?string $vat,
     ) {}
 }
